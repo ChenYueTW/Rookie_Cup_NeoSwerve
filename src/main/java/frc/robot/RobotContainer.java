@@ -8,12 +8,15 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.commands.SwerveDriveCmd;
+import frc.robot.joystick.Driver;
 import frc.robot.subsystems.SwerveSubsystem;
 
 public class RobotContainer {
-	private final GamepadJoystick joystick = new GamepadJoystick(GamepadJoystick.CONTROLLER_PORT);
+	private final Driver driver = new Driver(0);
 	private final SwerveSubsystem swerveSubsystem = new SwerveSubsystem();
-	private final SwerveDriveCmd swerveDriveCmd = new SwerveDriveCmd(swerveSubsystem, joystick);
+	private final SwerveDriveCmd swerveDriveCmd = new SwerveDriveCmd(
+		swerveSubsystem, driver::getXDesiredSpeed, driver::getYDesiredSpeed, driver::getRotationDesiredSpeed
+	);
 	private final ChoreoTrajectory trajectory = Choreo.getTrajectory("FiveNotes");
 	
 	public RobotContainer() {

@@ -8,16 +8,12 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.DeviceId.Neo;
-import frc.robot.lib.IDashboardProvider;
-import frc.robot.DeviceId.Encoder;
-import frc.robot.Constants.MotorReverse;
-import frc.robot.Constants.SwerveConstants;
-import frc.robot.Constants.DriveEncoderReverse;
-import frc.robot.Constants.EncoderOffset;
-import frc.robot.Constants;
+import frc.robot.SwerveConstants;
+import frc.robot.lib.helpers.IDashboardProvider;
 
 public class SwerveSubsystem extends SubsystemBase implements IDashboardProvider {
     private final SwerveModule frontLeft;
@@ -27,51 +23,34 @@ public class SwerveSubsystem extends SubsystemBase implements IDashboardProvider
     private final AHRS gyro;
     private final SwerveDriveOdometry odometry;
 
+    StructPublisher<Pose2d> publisher = NetworkTableInstance.getDefault()
+        .getStructTopic("Advantage_Config/RobotPose2d", Pose2d.struct).publish();
+
     public SwerveSubsystem() {
         this.registerDashboard();
         this.frontLeft = new SwerveModule(
-            Neo.frontLeftDrive,
-            Neo.frontLeftTurn,
-            Encoder.frontLeft,
-            MotorReverse.FRONT_LEFT_DRIVE,
-            MotorReverse.FRONT_LEFT_TURN,
-            DriveEncoderReverse.FRONT_LEFT,
-            EncoderOffset.FRONT_LEFT,
+            2, 1, 9,
+            true, true, true,
             "frontLeft"
         );
         this.frontRight = new SwerveModule(
-            Neo.frontRightDrive,
-            Neo.frontRightTurn,
-            Encoder.frontRight,
-            MotorReverse.FRONT_RIGHT_DRIVE,
-            MotorReverse.FRONT_RIGHT_TURN,
-            DriveEncoderReverse.FRONT_RIGHT,
-            EncoderOffset.FRONT_RIGHT,
+            6, 5, 10, 
+            false, true, true,
             "frontRight"
         );
         this.backLeft = new SwerveModule(
-            Neo.backLeftDrive,
-            Neo.backLeftTurn,
-            Encoder.backLeft,
-            MotorReverse.BACK_LEFT_DRIVE,
-            MotorReverse.BACK_LEFT_TURN,
-            DriveEncoderReverse.BACK_LEFT,
-            EncoderOffset.BACK_LEFT,
+            4, 3, 11,
+            true, true, true,
             "backLeft"
         );
         this.backRight = new SwerveModule(
-            Neo.backRightDrive,
-            Neo.backRightTurn,
-            Encoder.backRight,
-            MotorReverse.BACK_RIGHT_DRIVE,
-            MotorReverse.BACK_RIGHT_TURN,
-            DriveEncoderReverse.BACK_RIGHT,
-            EncoderOffset.BACK_RIGHT,
+            7, 8, 12,
+            false, true, true,
             "backRight"
         );
         this.gyro = new AHRS(SPI.Port.kMXP);
         this.odometry = new SwerveDriveOdometry(
-            Constants.swerveDriveKinematics, this.gyro.getRotation2d(), this.getModulePosition()
+            SwerveConstants.swerveDriveKinematics, this.gyro.getRotation2d(), this.getModulePosition()
         );
         this.wait(1000);
         this.gyro.reset();
@@ -80,6 +59,7 @@ public class SwerveSubsystem extends SubsystemBase implements IDashboardProvider
     @Override
     public void periodic() {
         this.odometry.update(this.gyro.getRotation2d(), getModulePosition());
+        this.publisher.set(this.getPose());
     }
 
     public void resetGyro() {
@@ -87,7 +67,7 @@ public class SwerveSubsystem extends SubsystemBase implements IDashboardProvider
     }
 
     public void driveSwerve(double xSpeed, double ySpeed, double rotation, boolean field) {
-        SwerveModuleState[] state = Constants.swerveDriveKinematics.toSwerveModuleStates(field ? 
+        SwerveModuleState[] state = SwerveConstants.swerveDriveKinematics.toSwerveModuleStates(field ? 
             ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rotation, this.gyro.getRotation2d()) :
             new ChassisSpeeds(xSpeed, ySpeed, rotation)
         );
@@ -96,12 +76,12 @@ public class SwerveSubsystem extends SubsystemBase implements IDashboardProvider
 
     public void chassisDrive(ChassisSpeeds relativeSpeed) {
         ChassisSpeeds targetSpeed = ChassisSpeeds.discretize(relativeSpeed, 0.02);
-        SwerveModuleState state[] = Constants.swerveDriveKinematics.toSwerveModuleStates(targetSpeed);
+        SwerveModuleState state[] = SwerveConstants.swerveDriveKinematics.toSwerveModuleStates(targetSpeed);
         this.setModuleState(state);
     }
 
     public void setModuleState(SwerveModuleState[] states) {
-        SwerveDriveKinematics.desaturateWheelSpeeds(states, SwerveConstants.PHYSICAL_MAX_SPEED_METERS_PER_SECOND);
+        SwerveDriveKinematics.desaturateWheelSpeeds(states, SwerveConstants.MAX_SPEED_METERS_PER_SECOND);
         this.frontLeft.setDesiredState(states[0]);
         this.frontRight.setDesiredState(states[1]);
         this.backLeft.setDesiredState(states[2]);
@@ -144,7 +124,7 @@ public class SwerveSubsystem extends SubsystemBase implements IDashboardProvider
 
 
     public ChassisSpeeds getSpeeds() {
-        return Constants.swerveDriveKinematics.toChassisSpeeds(this.getModuleState());
+        return SwerveConstants.swerveDriveKinematics.toChassisSpeeds(this.getModuleState());
     }
 
     public void stopModules() {

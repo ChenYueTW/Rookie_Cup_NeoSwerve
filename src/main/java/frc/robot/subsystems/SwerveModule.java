@@ -9,9 +9,10 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Constants.SwerveConstants;
-import frc.robot.lib.IDashboardProvider;
-import frc.robot.lib.SwerveSpark;
+import frc.robot.SwerveConstants;
+import frc.robot.lib.helpers.IDashboardProvider;
+import frc.robot.lib.math.MathHelper;
+import frc.robot.lib.motor.SwerveSpark;
 
 public class SwerveModule implements IDashboardProvider{
     private final SwerveSpark driveMotor;
@@ -20,19 +21,19 @@ public class SwerveModule implements IDashboardProvider{
     private final RelativeEncoder driveEncoder;
     private final CANcoder turnEncoder;
 
-    private final PIDController turnPidController;
+    private final PIDController drivePid;
+    private final PIDController turnPid;
 
     private final String motorName;
     private double driveOutput;
     private double turnOutput;
 
-    private final double turningEncoderOffset;
     private final boolean driveEncoderReversed;
 
     public SwerveModule(
         int driveMotorPort, int turnMotorPort, int turnEncoderPort,
         boolean driveMotorReverse, boolean turnMotorReverse, boolean driveEncoderReverse,
-        double turnEncoderOffset, String motorName
+        String motorName
     ){
         this.registerDashboard();
 
@@ -46,11 +47,12 @@ public class SwerveModule implements IDashboardProvider{
         this.driveEncoder.setPositionConversionFactor(SwerveConstants.DRIVE_POSITION_CONVERSION_FACTOR);
         this.driveEncoder.setVelocityConversionFactor(SwerveConstants.DRIVE_VELOCITY_CONVERSION_FACTOR);
 
-        this.turnPidController = new PIDController(0.0065, 0.00005, 0.0);
-        this.turnPidController.enableContinuousInput(-180, 180);
+        this.drivePid = new PIDController(0.0, 0.0, 0.0);
+
+        this.turnPid = new PIDController(0.0065, 0.00005, 0.0);
+        this.turnPid.enableContinuousInput(-180, 180);
 
         this.motorName = motorName;
-        this.turningEncoderOffset = turnEncoderOffset;
     }
 
     public double getDriveEncoderPosition() {
@@ -76,20 +78,16 @@ public class SwerveModule implements IDashboardProvider{
     }
 
     public double getTurningEncoderPosition() {
-        double value = Units.rotationsToDegrees(this.turnEncoder.getAbsolutePosition().getValue()) - this.turningEncoderOffset;
+        double value = Units.rotationsToDegrees(this.turnEncoder.getAbsolutePosition().getValue());
         value %= 360.0;
         return value > 180 ? value - 360 : value;
     }
 
     public void setDesiredState(SwerveModuleState desiredState) {
-        if (Math.abs(desiredState.speedMetersPerSecond) < 0.001) {
-            this.stop();
-            return;
-        }
         SwerveModuleState state = SwerveModuleState.optimize(desiredState, this.getState().angle);
 
-        this.driveOutput = state.speedMetersPerSecond / SwerveConstants.PHYSICAL_MAX_SPEED_METERS_PER_SECOND;
-        this.turnOutput = this.turnPidController.calculate(this.getState().angle.getDegrees(), state.angle.getDegrees());
+        this.driveOutput = this.drivePid.calculate(MathHelper.rpmToMpS(this.driveEncoder.getVelocity()), state.speedMetersPerSecond);
+        this.turnOutput = this.turnPid.calculate(this.getState().angle.getDegrees(), state.angle.getDegrees());
 
         this.driveMotor.set(this.driveOutput);
         this.turnMotor.set(this.turnOutput);
@@ -97,12 +95,12 @@ public class SwerveModule implements IDashboardProvider{
 
     @Override
     public void putDashboard() {
-        SmartDashboard.putNumber(this.motorName + " DriveVelocity", this.getState().speedMetersPerSecond);
-        SmartDashboard.putNumber(this.motorName + " TurnPosition", this.getTurningEncoderPosition());
+        SmartDashboard.putNumber("SwerveState/" + this.motorName + " DriveVel", this.getState().speedMetersPerSecond);
+        SmartDashboard.putNumber("SwerveState/" + this.motorName + " TurnPos", this.getTurningEncoderPosition());
     }
 
     public void stop() {
-        this.driveMotor.set(0);
-        this.turnMotor.set(0);
+        this.driveMotor.set(0.0);
+        this.turnMotor.set(0.0);
     }
 }

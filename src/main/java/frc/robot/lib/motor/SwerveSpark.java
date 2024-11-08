@@ -1,8 +1,8 @@
-package frc.robot.lib;
+package frc.robot.lib.motor;
 
 import com.revrobotics.CANSparkMax;
 
-import frc.robot.Constants.SwerveConstants;
+import frc.robot.SwerveConstants;
 
 public class SwerveSpark extends CANSparkMax {
     public SwerveSpark(int motorPort, boolean reverse) {
