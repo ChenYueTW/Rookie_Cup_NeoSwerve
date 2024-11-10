@@ -1,0 +1,37 @@
+{
+    "name": "KitBot",
+    "disableSimplification": true,
+    "rotations": [
+        {
+            "axis": "z",
+            "degrees": 90.0
+        }
+    ],
+    "position": [
+        0.0,
+        0.0,
+        0.0
+    ],
+    "cameras": [
+        {
+            "name": "Middle CAM",
+            "rotations": [
+                {
+                    "axis": "y",
+                    "degrees": 0.0
+                }
+            ],
+            "position": [
+                0.0,
+                0.0,
+                0.0
+            ],
+            "resolution": [
+                1920,
+                1080
+            ],
+            "fov": 30
+        }
+    ],
+    "components": []
+}

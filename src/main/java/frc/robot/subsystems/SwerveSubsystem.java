@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
@@ -23,8 +24,8 @@ public class SwerveSubsystem extends SubsystemBase implements IDashboardProvider
     private final AHRS gyro;
     private final SwerveDriveOdometry odometry;
 
-    StructPublisher<Pose2d> publisher = NetworkTableInstance.getDefault()
-        .getStructTopic("Advantage_Config/RobotPose2d", Pose2d.struct).publish();
+    StructPublisher<Pose3d> publisher = NetworkTableInstance.getDefault()
+        .getStructTopic("Advantage_Config/RobotPose3d", Pose3d.struct).publish();
 
     public SwerveSubsystem() {
         this.registerDashboard();
@@ -59,7 +60,7 @@ public class SwerveSubsystem extends SubsystemBase implements IDashboardProvider
     @Override
     public void periodic() {
         this.odometry.update(this.gyro.getRotation2d(), getModulePosition());
-        this.publisher.set(this.getPose());
+        this.publisher.set(new Pose3d(this.getPose()));
     }
 
     public void resetGyro() {
