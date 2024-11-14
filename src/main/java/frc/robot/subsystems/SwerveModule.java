@@ -41,9 +41,8 @@ public class SwerveModule implements IDashboardProvider{
         this.driveEncoder.setPositionConversionFactor(SwerveConstants.DRIVE_POSITION_CONVERSION_FACTOR);
         this.driveEncoder.setVelocityConversionFactor(SwerveConstants.DRIVE_VELOCITY_CONVERSION_FACTOR);
 
-        this.drivePid = new PIDController(0.0, 0.0, 0.0, 0.01);
-        this.drivePid.setIntegratorRange(-100, 100);
-        this.turnPid = new PIDController(0.0065, 0.00005, 0.0, 0.01);
+        this.drivePid = new PIDController(0.033, 1.0, 0.0009, 0.01);
+        this.turnPid = new PIDController(0.006, 0.00005, 0.0, 0.01);
         this.turnPid.enableContinuousInput(-180, 180);
 
         this.motorName = motorName;
@@ -64,9 +63,10 @@ public class SwerveModule implements IDashboardProvider{
     }
 
     public void setDesiredState(SwerveModuleState desiredState) {
-        SwerveModuleState state = SwerveModuleState.optimize(desiredState, this.getState().angle);
+        SwerveModuleState state = SwerveModuleState.optimize(desiredState, this.getPosition().angle);
 
         this.driveOutput = this.drivePid.calculate(this.getState().speedMetersPerSecond, state.speedMetersPerSecond);
+        SmartDashboard.putNumber(this.motorName + " Goal", state.speedMetersPerSecond);
         this.turnOutput = this.turnPid.calculate(this.getState().angle.getDegrees(), state.angle.getDegrees());
 
         this.driveMotor.set(this.driveOutput);
@@ -75,8 +75,10 @@ public class SwerveModule implements IDashboardProvider{
 
     @Override
     public void putDashboard() {
+        // SmartDashboard.putNumber("SwerveState/" + this.motorName + " DriveVel", this.driveEncoder.getVelocity());
+        // SmartDashboard.putNumber("SwerveState/" + this.motorName + " TurnPos", this.turnEncoder.getAbsolutePositionDegrees());
         SmartDashboard.putNumber("SwerveState/" + this.motorName + " DriveVel", this.driveEncoder.getVelocity());
-        SmartDashboard.putNumber("SwerveState/" + this.motorName + " TurnPos", this.turnEncoder.getAbsolutePositionDegrees());
+        // SmartDashboard.putNumber("SwerveState/" + this.motorName + " TurnPos", t);
     }
 
     public void stop() {

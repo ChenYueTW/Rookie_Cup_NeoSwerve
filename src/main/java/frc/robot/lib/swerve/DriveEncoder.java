@@ -29,7 +29,7 @@ public class DriveEncoder implements RelativeEncoder {
 
     @Override
     public REVLibError setPositionConversionFactor(double factor) {
-        return this.setPositionConversionFactor(factor);
+        return this.encoder.setPositionConversionFactor(factor);
     }
 
     @Override

@@ -2,15 +2,16 @@ package frc.robot;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.util.Units;
 
 public final class SwerveConstants {
-	public static final double TRACK_WIDTH = 0.66;
-	public static final double TRACK_LENGTH = 0.66;
-	public static final double WHEEL_RADIUS = 0.0508;
+	public static final double TRACK_WIDTH = Units.inchesToMeters(19.25);
+	public static final double TRACK_LENGTH = Units.inchesToMeters(19.25);
+	public static final double WHEEL_RADIUS = Units.inchesToMeters(3.996);
 
-	public static final double MAX_SPEED_METERS_PER_SECOND = 3.0;
-	public static final double MAX_ACCELERATION = 1.0;
-	public static final double MAX_ANGULAR_ACCELERATION = 3.0;
+	public static final double MAX_SPEED_METERS_PER_SECOND = 4.0;
+	public static final double MAX_ACCELERATION = 9.0;
+	public static final double MAX_ANGULAR_ACCELERATION = 9.0;
 	public static final double DRIVE_GEAR_RATIO = 57.0 / 7.0;
 	public static final int MAX_VOLTAGE = 20;
 
