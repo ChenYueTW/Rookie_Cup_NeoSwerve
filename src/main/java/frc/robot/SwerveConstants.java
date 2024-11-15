@@ -7,9 +7,9 @@ import edu.wpi.first.math.util.Units;
 public final class SwerveConstants {
 	public static final double TRACK_WIDTH = Units.inchesToMeters(19.25);
 	public static final double TRACK_LENGTH = Units.inchesToMeters(19.25);
-	public static final double WHEEL_RADIUS = Units.inchesToMeters(3.996);
+	public static final double WHEEL_RADIUS = 0.0508;
 
-	public static final double MAX_SPEED_METERS_PER_SECOND = 4.0;
+	public static final double MAX_SPEED_METERS_PER_SECOND = 3.0;
 	public static final double MAX_ACCELERATION = 9.0;
 	public static final double MAX_ANGULAR_ACCELERATION = 9.0;
 	public static final double DRIVE_GEAR_RATIO = 57.0 / 7.0;

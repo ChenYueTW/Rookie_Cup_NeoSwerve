@@ -9,6 +9,10 @@ public class Robot extends TimedRobot {
 	private Command autonomousCommand;
 	private RobotContainer robotContainer;
 
+	public Robot() {
+		super(0.01);
+	}
+
 	@Override
 	public void robotInit() {
 		DashboardHelper.enableRegistration();

@@ -6,6 +6,7 @@ import frc.robot.lib.helpers.IDashboardProvider;
 import frc.robot.lib.motor.SparkModule;
 
 public class IntakeSubsystem extends SubsystemBase implements IDashboardProvider {
+    // TODO
     private final SparkModule intake = new SparkModule(0, false, false);
     private final double INTAKE_SPEED = 0.0;
     private final double RELEASE_SPEED = 0.0;

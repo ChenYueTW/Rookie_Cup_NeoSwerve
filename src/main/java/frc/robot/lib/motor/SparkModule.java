@@ -11,6 +11,7 @@ public class SparkModule extends CANSparkMax {
 
     public SparkModule(int port, boolean reverse, boolean isBrake) {
         super(port, MotorType.kBrushless);
+        this.restoreFactoryDefaults();
         this.setIdleMode(isBrake ? IdleMode.kBrake : IdleMode.kCoast);
         this.setInverted(reverse);
         this.encoder = this.getEncoder();

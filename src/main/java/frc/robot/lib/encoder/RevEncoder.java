@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.DutyCycleEncoder;
 public class RevEncoder extends DutyCycleEncoder {
     public RevEncoder(int port) {
         super(port);
+        this.reset();
     }
 
     // Max & Min is Degrees

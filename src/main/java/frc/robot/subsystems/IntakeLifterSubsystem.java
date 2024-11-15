@@ -10,25 +10,17 @@ import frc.robot.lib.motor.TalonModule;
 public class IntakeLifterSubsystem extends SubsystemBase implements IDashboardProvider {
     private final TalonModule lifter = new TalonModule(0, false, true);
     private final RevEncoder encoder = new RevEncoder(0);
-    private final PIDController lifterPid = new PIDController(0, 0, 0, 0.01);
-    private final double AMP_DEGREES = 0.0;
-    private final double maxDegree = 0.0;
-    private final double minDegree = 0.0;
+    private final PIDController lifterPid = new PIDController(0, 0, 0, 0.01); // TODO
+    private final double AMP_DEGREE = 0.0; // TODO
+    private final double MAX_DEGREE = 0.0; // TODO
+    private final double MIN_DEGREE = 0.0; // TODO
 
     public IntakeLifterSubsystem() {
         this.registerDashboard();
     }
 
     public void executeLifter(double speed) {
-        if (this.encoder.isInRange(this.maxDegree, this.minDegree) == 0) {
-            this.lifter.set(speed);
-        } else if (this.encoder.isInRange(this.maxDegree, this.minDegree) == -1 && speed > 0.0) {
-            this.lifter.set(speed);
-        } else if (this.encoder.isInRange(this.maxDegree, this.minDegree) == 1 && speed < 0.0) {
-            this.lifter.set(speed);
-        } else {
-            this.lifter.stopMotor();
-        }
+        this.lifter.rangeLimit(this.MAX_DEGREE, this.MIN_DEGREE, speed);
     }
 
     public void lifterTo(double angle) {
@@ -37,7 +29,7 @@ public class IntakeLifterSubsystem extends SubsystemBase implements IDashboardPr
     }
 
     public void lifterAmp() {
-        this.lifterTo(this.AMP_DEGREES);
+        this.lifterTo(this.AMP_DEGREE);
     }
 
     public void stopLifter() {

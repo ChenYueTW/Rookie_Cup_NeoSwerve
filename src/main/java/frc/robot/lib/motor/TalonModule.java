@@ -8,6 +8,7 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 public class TalonModule extends TalonFX {
     public TalonModule(int port, boolean reverse, boolean isBrake) {
         super(port);
+        this.clearStickyFaults();
         this.setInverted(reverse);
         this.setNeutralMode(isBrake ? NeutralModeValue.Brake : NeutralModeValue.Coast);
 
@@ -22,5 +23,21 @@ public class TalonModule extends TalonFX {
         TalonFXConfiguration FXConfig = new TalonFXConfiguration().withCurrentLimits(currentConfig);
         this.getConfigurator().refresh(FXConfig);
         this.setPosition(0.0);
+    }
+
+    public double getPositionDegrees() {
+        return this.getPosition().getValue();
+    }
+
+    public void rangeLimit(double max, double min, double speed) {
+        if (this.getPositionDegrees() >= min && this.getPositionDegrees() <= max) {
+            this.set(speed);
+        } else if (this.getPositionDegrees() > max && speed <= 0.0) {
+            this.set(speed);
+        } else if (this.getPositionDegrees() < min && speed >= 0.0) {
+            this.set(speed);
+        } else {
+            this.stopMotor();
+        }
     }
 }

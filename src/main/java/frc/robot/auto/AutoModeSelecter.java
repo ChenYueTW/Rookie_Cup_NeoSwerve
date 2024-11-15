@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class AutoModeSelecter {
-    private static final SendableChooser<Target> chooser = new SendableChooser<>();
+    private static final SendableChooser<String> chooser = new SendableChooser<>();
 
     public enum Target {
         NOT_THING,
@@ -14,14 +14,14 @@ public class AutoModeSelecter {
     }
 
     public AutoModeSelecter() {
-        chooser.addOption("NOT_THING", Target.NOT_THING);
-        chooser.addOption("ThreeNotes", Target.THREE_NOTES);
-        chooser.addOption("FourNotes", Target.FOURNOTES);
-        chooser.addOption("FiveNotes", Target.FIVENOTES);
-        SmartDashboard.putData(chooser);
+        chooser.setDefaultOption("DO_NOTTHING", Target.NOT_THING.toString());
+        chooser.addOption("ThreeNotes", Target.THREE_NOTES.toString());
+        chooser.addOption("FourNotes", Target.FOURNOTES.toString());
+        chooser.addOption("FiveNotes", Target.FIVENOTES.toString());
+        SmartDashboard.putData("Auto Chooser", chooser);
     }
 
-    public static SendableChooser<Target> getChooser() {
+    public static SendableChooser<String> getChooser() {
         return chooser;
     }
 }
