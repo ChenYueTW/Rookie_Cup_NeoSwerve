@@ -25,7 +25,7 @@ public class Driver extends XboxController{
     }
 
     public double getRotationDesiredSpeed() {
-        double speed = -MathUtil.applyDeadband(this.getRightX(), SwerveConstants.DEAD_BAND) * 4.0;
+        double speed = -MathUtil.applyDeadband(this.getRightX(), SwerveConstants.DEAD_BAND);
         return this.rotationLimiter.calculate(speed);
     }
 }

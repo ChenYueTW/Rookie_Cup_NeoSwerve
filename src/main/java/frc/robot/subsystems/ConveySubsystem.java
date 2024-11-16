@@ -3,19 +3,18 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.lib.helpers.IDashboardProvider;
 import frc.robot.lib.motor.TalonModule;
+import frc.robot.lib.subsystems.SubsystemBase;
 
-public class ConveySubsystem extends SubsystemBase implements IDashboardProvider {
+public class ConveySubsystem extends SubsystemBase {
     private final TalonModule convey = new TalonModule(0, false, false);
     private final double CONVEY_SPEED = 0.0;
 
     public ConveySubsystem() {
-        this.registerDashboard();
+        super("Convey");
     }
-    
+
     public void execute() {
         this.convey.set(this.CONVEY_SPEED);
     }

@@ -23,6 +23,7 @@ public class IntakeCmd extends Command {
 	public void execute() {
 		if (this.intake.get()) this.intakeSubsystem.executeIntake();
 		else if (this.release.get()) this.intakeSubsystem.releaseIntake();
+		else this.intakeSubsystem.stopIntake();
 	}
 
 	@Override

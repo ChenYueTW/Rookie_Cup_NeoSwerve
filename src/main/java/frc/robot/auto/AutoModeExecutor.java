@@ -12,10 +12,11 @@ public class AutoModeExecutor {
 
     public AutoModeExecutor(SwerveSubsystem swerveSubsystem) {
         this.swerveSubsystem = swerveSubsystem;
-        // this.trajectory = Choreo.getTrajectory(AutoModeSelecter.getChooser());
     }
 
     public Command getAutonomousCommand() {
+        if (AutoModeSelecter.getChooser().getSelected() == "NOT_THING") return null;
+
 		return Choreo.choreoSwerveCommand(
 			Choreo.getTrajectory(AutoModeSelecter.getChooser().getSelected()),
 			this.swerveSubsystem::getPose,

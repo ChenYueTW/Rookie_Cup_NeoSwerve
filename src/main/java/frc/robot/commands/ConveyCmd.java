@@ -2,18 +2,18 @@ package frc.robot.commands;
 
 import java.util.function.Supplier;
 
-import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.lib.subsystems.CommandBase;
 import frc.robot.subsystems.ConveySubsystem;
 
-public class ConveyCmd extends Command {
+public class ConveyCmd extends CommandBase {
 	private final ConveySubsystem conveySubsystem;
 	private final Supplier<Boolean> convey, release;
 
 	public ConveyCmd(ConveySubsystem conveySubsystem, Supplier<Boolean> convey, Supplier<Boolean> release) {
+		super(conveySubsystem);
 		this.conveySubsystem = conveySubsystem;
 		this.convey = convey;
 		this.release = release;
-		this.addRequirements(this.conveySubsystem);
 	}
 
 	@Override

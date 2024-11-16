@@ -8,7 +8,6 @@ public final class DashboardHelper {
     private static final ArrayList<IDashboardProvider> providers = new ArrayList<>();
     private static boolean isRegistrationValid = false;
 
-
     public static void register(IDashboardProvider provider) {
         if (isRegistrationValid) {
             providers.add(provider);

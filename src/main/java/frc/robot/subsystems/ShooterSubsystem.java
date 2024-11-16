@@ -20,7 +20,7 @@ public class ShooterSubsystem extends SubsystemBase implements IDashboardProvide
     }
 
     public void execute() {
-        double frontSpeed = this.frontPid.calculate(this.front.getVelocity().getValue(), 0); // TODO
+        double frontSpeed = this.frontPid.calculate(this.front.getVelocity().getValue(), 50.0); // TODO
         this.front.set(frontSpeed);
         this.back.setControl(this.follower);
     }

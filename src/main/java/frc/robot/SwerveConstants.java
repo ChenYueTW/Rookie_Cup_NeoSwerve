@@ -11,6 +11,7 @@ public final class SwerveConstants {
 
 	public static final double MAX_SPEED_METERS_PER_SECOND = 3.0;
 	public static final double MAX_ACCELERATION = 9.0;
+	// public static final double MAX_ANGULAR_DEGREES_PER_SECOND = 90.0;
 	public static final double MAX_ANGULAR_ACCELERATION = 9.0;
 	public static final double DRIVE_GEAR_RATIO = 57.0 / 7.0;
 	public static final int MAX_VOLTAGE = 20;
