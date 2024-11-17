@@ -123,7 +123,6 @@ public class SwerveSubsystem extends SubsystemBase implements IDashboardProvider
         this.odometry.resetPosition(this.gyro.getRotation2d(), this.getModulePosition(), pose);
     }
 
-
     public ChassisSpeeds getSpeeds() {
         return SwerveConstants.swerveDriveKinematics.toChassisSpeeds(this.getModuleState());
     }

@@ -3278,7 +3278,7 @@
             "usesDefaultFieldObstacles": true,
             "circleObstacles": [],
             "eventMarkers": [],
-            "isTrajectoryStale": false
+            "isTrajectoryStale": true
         },
         "ThreeNotes": {
             "waypoints": [
@@ -7134,7 +7134,21 @@
             "defaultControlIntervalCount": 40,
             "usesDefaultFieldObstacles": true,
             "circleObstacles": [],
-            "eventMarkers": [],
+            "eventMarkers": [
+                {
+                    "name": "Marker",
+                    "target": "first",
+                    "trajTargetIndex": null,
+                    "targetTimestamp": null,
+                    "offset": 0,
+                    "command": {
+                        "type": "named",
+                        "data": {
+                            "name": ""
+                        }
+                    }
+                }
+            ],
             "isTrajectoryStale": false
         },
         "FiveNotes": {

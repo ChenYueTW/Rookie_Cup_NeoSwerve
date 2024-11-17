@@ -4,7 +4,7 @@ import com.ctre.phoenix6.hardware.CANcoder;
 
 import edu.wpi.first.math.util.Units;
 
-public class TurnEncoder extends CANcoder{
+public class TurnEncoder extends CANcoder {
     public TurnEncoder(int port) {
         super(port);
     }
