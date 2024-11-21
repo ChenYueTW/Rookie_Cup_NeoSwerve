@@ -12,11 +12,10 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.SwerveConstants;
-import frc.robot.lib.helpers.IDashboardProvider;
+import frc.robot.lib.subsystems.SubsystemBase;
 
-public class SwerveSubsystem extends SubsystemBase implements IDashboardProvider {
+public class SwerveSubsystem extends SubsystemBase {
     private final SwerveModule frontLeft;
     private final SwerveModule frontRight;
     private final SwerveModule backLeft;
@@ -28,7 +27,7 @@ public class SwerveSubsystem extends SubsystemBase implements IDashboardProvider
         .getStructTopic("Advantage_Config/RobotPose3d", Pose3d.struct).publish();
 
     public SwerveSubsystem() {
-        this.registerDashboard();
+        super("Swerve");
         this.frontLeft = new SwerveModule(
             2, 1, 9,
             true, true, true,
