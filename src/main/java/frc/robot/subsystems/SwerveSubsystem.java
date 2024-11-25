@@ -12,9 +12,8 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.networktables.StructPublisher;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Robot;
 import frc.robot.SwerveConstants;
 import frc.robot.lib.subsystems.SubsystemBase;
 
@@ -97,7 +96,6 @@ public class SwerveSubsystem extends SubsystemBase {
 
     public void chassisDrive(ChassisSpeeds relativeSpeed) {
         ChassisSpeeds targetSpeed = ChassisSpeeds.discretize(relativeSpeed, 0.02);
-        SmartDashboard.putNumber("x", targetSpeed.vxMetersPerSecond);
         if (Robot.isSimulation()) this.simDrive(targetSpeed.vxMetersPerSecond, targetSpeed.vyMetersPerSecond, targetSpeed.omegaRadiansPerSecond);
         SwerveModuleState state[] = SwerveConstants.swerveDriveKinematics.toSwerveModuleStates(targetSpeed);
         this.setModuleState(state);
