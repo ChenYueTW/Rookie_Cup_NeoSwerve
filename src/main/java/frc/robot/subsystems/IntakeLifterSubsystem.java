@@ -2,12 +2,11 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.lib.encoder.RevEncoder;
-import frc.robot.lib.helpers.IDashboardProvider;
 import frc.robot.lib.motor.TalonModule;
+import frc.robot.lib.subsystems.SubsystemBase;
 
-public class IntakeLifterSubsystem extends SubsystemBase implements IDashboardProvider {
+public class IntakeLifterSubsystem extends SubsystemBase {
     private final TalonModule lifter = new TalonModule(0, false, true);
     private final RevEncoder encoder = new RevEncoder(0);
     private final PIDController lifterPid = new PIDController(0, 0, 0, 0.01); // TODO
@@ -16,11 +15,12 @@ public class IntakeLifterSubsystem extends SubsystemBase implements IDashboardPr
     private final double MIN_DEGREE = 0.0; // TODO
 
     public IntakeLifterSubsystem() {
-        this.registerDashboard();
+        super("Intake Liefter");
+        this.lifter.setDegreesRange(this.MAX_DEGREE, this.MIN_DEGREE);
     }
 
     public void executeLifter(double speed) {
-        this.lifter.rangeLimit(this.MAX_DEGREE, this.MIN_DEGREE, speed);
+        this.lifter.set(speed);
     }
 
     public void lifterTo(double angle) {

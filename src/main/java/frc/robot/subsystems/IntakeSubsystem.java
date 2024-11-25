@@ -1,11 +1,10 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.lib.helpers.IDashboardProvider;
 import frc.robot.lib.motor.SparkModule;
+import frc.robot.lib.subsystems.SubsystemBase;
 
-public class IntakeSubsystem extends SubsystemBase implements IDashboardProvider {
+public class IntakeSubsystem extends SubsystemBase {
     // TODO
     private final SparkModule intake = new SparkModule(0, false, false);
     private final double INTAKE_SPEED = 0.0;
@@ -13,7 +12,7 @@ public class IntakeSubsystem extends SubsystemBase implements IDashboardProvider
     private final double AMP_SPEED = 0.0;
 
     public IntakeSubsystem() {
-        this.registerDashboard();
+        super("Intake");
     }
 
     public void executeIntake() {

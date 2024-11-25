@@ -2,11 +2,10 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.lib.helpers.IDashboardProvider;
 import frc.robot.lib.motor.TalonModule;
+import frc.robot.lib.subsystems.SubsystemBase;
 
-public class ShooterLifterSubsystem extends SubsystemBase implements IDashboardProvider {
+public class ShooterLifterSubsystem extends SubsystemBase {
     // TODO
     private final TalonModule shooterLifter = new TalonModule(0, false, true);
     private final PIDController lifterPid = new PIDController(0, 0, 0);
@@ -14,11 +13,12 @@ public class ShooterLifterSubsystem extends SubsystemBase implements IDashboardP
     private final double MIN_DEGREE = 0.0;
 
     public ShooterLifterSubsystem() {
-        this.registerDashboard();
+        super("Shooter Liefter");
+        this.shooterLifter.setDegreesRange(this.MAX_DEGREE, this.MIN_DEGREE);
     }
 
     public void execute(double speed) {
-        this.shooterLifter.rangeLimit(this.MAX_DEGREE, this.MIN_DEGREE, speed);
+        this.shooterLifter.set(speed);
     }
 
     public void moveTo(double degrees) {
