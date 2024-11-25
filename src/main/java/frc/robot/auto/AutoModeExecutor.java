@@ -17,12 +17,14 @@ public class AutoModeExecutor {
     public Command getAutonomousCommand() {
         if (AutoModeSelecter.getChooser().getSelected() == "NOT_THING") return null;
 
+        this.swerveSubsystem.resetPose(Choreo.getTrajectory(AutoModeSelecter.getChooser().getSelected()).getInitialPose());
+
 		return Choreo.choreoSwerveCommand(
 			Choreo.getTrajectory(AutoModeSelecter.getChooser().getSelected()),
 			this.swerveSubsystem::getPose,
-			new PIDController(5.0, 0, 0),
-			new PIDController(5.0, 0, 0),
-			new PIDController(5.0, 0, 0),
+			new PIDController(0.0001, 0.001, 0),
+			new PIDController(0.0001, 0001, 0),
+			new PIDController(0.001, 0.01, 0),
 			this.swerveSubsystem::chassisDrive,
 			() -> {
                 if (DriverStation.getAlliance().isPresent()) {

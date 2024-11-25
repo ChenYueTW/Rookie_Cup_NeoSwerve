@@ -3,16 +3,21 @@ package frc.robot.subsystems;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.networktables.StructPublisher;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Robot;
 import frc.robot.SwerveConstants;
 import frc.robot.lib.helpers.IDashboardProvider;
 
@@ -23,9 +28,14 @@ public class SwerveSubsystem extends SubsystemBase implements IDashboardProvider
     private final SwerveModule backRight;
     private final AHRS gyro;
     private final SwerveDriveOdometry odometry;
+    private double x = 0;
+    private double y = 0;
+    private double rot = 0;
 
-    StructPublisher<Pose3d> publisher = NetworkTableInstance.getDefault()
-        .getStructTopic("Advantage_Config/RobotPose3d", Pose3d.struct).publish();
+    private final StructArrayPublisher<SwerveModuleState> modulePublisher = NetworkTableInstance.getDefault()
+        .getStructArrayTopic("Advantage_Config/RobotModule", SwerveModuleState.struct).publish();
+    private final StructPublisher<Pose2d> publisher = NetworkTableInstance.getDefault()
+        .getStructTopic("Advantage_Config/Robot", Pose2d.struct).publish();
 
     public SwerveSubsystem() {
         this.registerDashboard();
@@ -60,7 +70,7 @@ public class SwerveSubsystem extends SubsystemBase implements IDashboardProvider
     @Override
     public void periodic() {
         this.odometry.update(this.gyro.getRotation2d(), getModulePosition());
-        this.publisher.set(new Pose3d(this.getPose()));
+        // this.publisher.set(new Pose3d(this.getPose()));
     }
 
     public void resetGyro() {
@@ -75,8 +85,23 @@ public class SwerveSubsystem extends SubsystemBase implements IDashboardProvider
         this.setModuleState(state);
     }
 
+    public void simDrive(double xSpeed, double ySpeed, double rotation) {
+        SwerveModuleState[] states = SwerveConstants.swerveDriveKinematics.toSwerveModuleStates(
+            new ChassisSpeeds(xSpeed, ySpeed, rotation)
+        );
+        ChassisSpeeds speeds = new ChassisSpeeds(xSpeed, ySpeed, rotation);
+        
+        this.x += speeds.vxMetersPerSecond * 0.015;
+        this.y += speeds.vyMetersPerSecond * 0.015;
+        this.rot += speeds.omegaRadiansPerSecond * 0.06;
+        this.publisher.set(new Pose2d(this.x, this.y, new Rotation2d(this.rot)));
+        this.modulePublisher.set(states); /// Swerve Sim
+    }
+
     public void chassisDrive(ChassisSpeeds relativeSpeed) {
         ChassisSpeeds targetSpeed = ChassisSpeeds.discretize(relativeSpeed, 0.02);
+        SmartDashboard.putNumber("x", targetSpeed.vxMetersPerSecond);
+        if (Robot.isSimulation()) this.simDrive(targetSpeed.vxMetersPerSecond, targetSpeed.vyMetersPerSecond, targetSpeed.omegaRadiansPerSecond);
         SwerveModuleState state[] = SwerveConstants.swerveDriveKinematics.toSwerveModuleStates(targetSpeed);
         this.setModuleState(state);
     }
@@ -120,6 +145,12 @@ public class SwerveSubsystem extends SubsystemBase implements IDashboardProvider
     }
 
     public void resetPose(Pose2d pose) {
+        if (Robot.isSimulation()) {
+            this.publisher.set(pose);
+            this.x = pose.getX();
+            this.y = pose.getY();
+            this.rot = pose.getRotation().getDegrees();
+        }
         this.odometry.resetPosition(this.gyro.getRotation2d(), this.getModulePosition(), pose);
     }
 

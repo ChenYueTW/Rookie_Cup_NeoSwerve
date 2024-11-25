@@ -11,7 +11,7 @@ import frc.robot.lib.motor.SwerveSpark;
 import frc.robot.lib.swerve.DriveEncoder;
 import frc.robot.lib.swerve.TurnEncoder;
 
-public class SwerveModule implements IDashboardProvider{
+public class SwerveModule implements IDashboardProvider {
     private final SwerveSpark driveMotor;
     private final SwerveSpark turnMotor;
 

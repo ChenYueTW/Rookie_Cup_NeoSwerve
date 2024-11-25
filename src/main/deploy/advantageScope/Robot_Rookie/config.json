@@ -1,16 +1,20 @@
 {
-    "name": "KitBot",
+    "name": "Rookie",
     "disableSimplification": true,
     "rotations": [
         {
+            "axis": "x",
+            "degrees": 180.0
+        },
+        {
             "axis": "z",
-            "degrees": 90.0
+            "degrees": -90.0
         }
     ],
     "position": [
-        0.0,
-        0.0,
-        0.0
+        -0.31115,
+        -0.31115,
+        0
     ],
     "cameras": [
         {
@@ -18,19 +22,19 @@
             "rotations": [
                 {
                     "axis": "y",
-                    "degrees": 0.0
+                    "degrees": 20
                 }
             ],
             "position": [
-                0.0,
-                0.0,
-                0.0
+                0.2,
+                0,
+                0.8
             ],
             "resolution": [
-                1920,
-                1080
+                960,
+                720
             ],
-            "fov": 30
+            "fov": 100
         }
     ],
     "components": []

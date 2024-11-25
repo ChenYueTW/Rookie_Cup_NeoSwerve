@@ -2,6 +2,7 @@ package frc.robot.commands;
 
 import java.util.function.Supplier;
 
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.SwerveConstants;
@@ -24,6 +25,7 @@ public class SwerveDriveCmd extends Command {
 	@Override
 	public void execute() {
 		this.swerveSubsystem.driveSwerve(this.xSpeed.get(), this.ySpeed.get(), this.rotationSpeed.get(), SwerveConstants.gyroField);
+		if (RobotBase.isSimulation()) this.swerveSubsystem.simDrive(this.xSpeed.get(), this.ySpeed.get(), this.rotationSpeed.get());
 	}
 
 	@Override
