@@ -40,7 +40,7 @@ public class SwerveModule implements IDashboardProvider {
         this.driveEncoder.setPositionConversionFactor(SwerveConstants.DRIVE_POSITION_CONVERSION_FACTOR);
         this.driveEncoder.setVelocityConversionFactor(SwerveConstants.DRIVE_VELOCITY_CONVERSION_FACTOR);
 
-        this.turnPid = new PIDController(0.006, 0.00005, 0.0, 0.01);
+        this.turnPid = new PIDController(0.0073, 0., 0.0); // TODO
         this.turnPid.enableContinuousInput(-180, 180);
 
         this.motorName = motorName;

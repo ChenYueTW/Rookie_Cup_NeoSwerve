@@ -2,6 +2,7 @@ package frc.robot.joystick;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.SwerveConstants;
 
 public class Controller extends XboxController {
@@ -9,25 +10,23 @@ public class Controller extends XboxController {
         super(port);
     }
 
-    public double getShooterLifterSpeed() {
+    public double getIntakeLifterSpeed() {
         return MathUtil.applyDeadband(this.getLeftY(), SwerveConstants.DEAD_BAND);
     }
-    public double getIntakeLifterSpeed() {
+
+    public double geShooterLifterSpeed() {
         return MathUtil.applyDeadband(this.getRightY(), SwerveConstants.DEAD_BAND);
     }
-    public boolean getIntake() {
-        return this.getAButton();
+
+    public Trigger getConveyInput() {
+        return new Trigger(this::getXButton);
     }
-    public boolean getIntakeRelease() {
-        return this.getBButton();
+
+    public Trigger shoot() {
+        return new Trigger(this::getLeftBumper);
     }
-    public boolean getConvey() {
-        return this.getXButton();
-    }
-    public boolean getConveyRelease() {
-        return this.getXButton();
-    }
-    public boolean isShoot() {
-        return this.getLeftBumper();
+
+    public boolean autoShoot() {
+        return this.getRightBumper();
     }
 }

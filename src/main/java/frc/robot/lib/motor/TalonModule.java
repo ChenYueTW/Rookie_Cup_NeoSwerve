@@ -1,5 +1,6 @@
 package frc.robot.lib.motor;
 
+import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -30,6 +31,10 @@ public class TalonModule extends TalonFX {
 
     public double getPositionDegrees() {
         return this.getPosition().getValue();
+    }
+
+    public double getVelocitySpeeds() {
+        return this.getVelocity().getValue();
     }
 
     public void setDegreesRange(double max, double min) {

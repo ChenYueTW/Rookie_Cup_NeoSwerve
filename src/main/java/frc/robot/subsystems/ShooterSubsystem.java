@@ -31,7 +31,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
     @Override
     public void putDashboard() {
-        SmartDashboard.putNumber("Shooter/Front", this.front.getPositionDegrees());
-        SmartDashboard.putNumber("Shooter/Back", this.back.getPositionDegrees());
+        SmartDashboard.putNumber("Shooter/Front", this.front.getVelocitySpeeds());
+        SmartDashboard.putNumber("Shooter/Back", this.back.getVelocitySpeeds());
     }
 }

@@ -11,7 +11,10 @@ public class SwerveDriveCmd extends Command {
 	private final SwerveSubsystem swerveSubsystem;
 	private final Supplier<Double> xSpeed, ySpeed, rotationSpeed;
 
-	public SwerveDriveCmd(SwerveSubsystem swerveSubsystem, Supplier<Double> xSpeed, Supplier<Double> ySpeed, Supplier<Double> rotationSpeed) {
+	public SwerveDriveCmd(
+		SwerveSubsystem swerveSubsystem,
+		Supplier<Double> xSpeed, Supplier<Double> ySpeed, Supplier<Double> rotationSpeed
+	) {
 		this.swerveSubsystem = swerveSubsystem;
 		this.xSpeed = xSpeed;
 		this.ySpeed = ySpeed;
@@ -25,6 +28,7 @@ public class SwerveDriveCmd extends Command {
 	@Override
 	public void execute() {
 		this.swerveSubsystem.driveSwerve(this.xSpeed.get(), this.ySpeed.get(), this.rotationSpeed.get(), SwerveConstants.gyroField);
+
 		if (RobotBase.isSimulation()) this.swerveSubsystem.simDrive(this.xSpeed.get(), this.ySpeed.get(), this.rotationSpeed.get());
 	}
 

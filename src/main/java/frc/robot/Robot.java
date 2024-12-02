@@ -11,6 +11,7 @@ public class Robot extends TimedRobot {
 
 	public Robot() {
 		super(0.01);
+		// CameraServer.startAutomaticCapture(0);
 	}
 
 	@Override
