@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -24,6 +25,7 @@ public class SwerveSubsystem extends SubsystemBase {
     private final SwerveModule backRight;
     private final AHRS gyro;
     private final SwerveDriveOdometry odometry;
+    private final PIDController turnPid = new PIDController(0, 0, 0);
     private double x = 0;
     private double y = 0;
     private double rot = 0;
@@ -68,7 +70,7 @@ public class SwerveSubsystem extends SubsystemBase {
         this.odometry.update(this.gyro.getRotation2d(), getModulePosition());
         // this.publisher.set(new Pose3d(this.getPose()));
     }
-
+    
     public void resetGyro() {
         this.gyro.reset();
     }
@@ -92,6 +94,11 @@ public class SwerveSubsystem extends SubsystemBase {
         this.rot += speeds.omegaRadiansPerSecond * 0.06;
         this.publisher.set(new Pose2d(this.x, this.y, new Rotation2d(this.rot)));
         this.modulePublisher.set(states); /// Swerve Sim
+    }
+
+    public void turnDrive(double xSpeed, double ySpeed, double angle) {
+        double speed = this.turnPid.calculate(this.gyro.getAngle(), angle);
+        this.driveSwerve(xSpeed, ySpeed, speed, true);
     }
 
     public void chassisDrive(ChassisSpeeds relativeSpeed) {

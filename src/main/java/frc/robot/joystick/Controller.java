@@ -22,6 +22,10 @@ public class Controller extends XboxController {
         return new Trigger(this::getXButton);
     }
 
+    public Trigger autoIntake() {
+        return new Trigger(this::getAButton);
+    }
+
     public Trigger shoot() {
         return new Trigger(this::getLeftBumper);
     }

@@ -28,7 +28,7 @@ public class VisionHelper {
         return this.ty.get();
     }
 
-    public boolean isTarget() {
+    public boolean hasTarget() {
         return this.tv.get() == 1.0;
     }
 }

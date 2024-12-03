@@ -1,7 +1,4 @@
-package frc.robot.lib.sencor;
-
-import java.util.function.BooleanSupplier;
-import java.util.function.Supplier;
+package frc.robot.lib.sensor;
 
 import com.revrobotics.ColorSensorV3;
 

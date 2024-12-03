@@ -7,13 +7,12 @@ import frc.robot.subsystems.ConveySubsystem;
 
 public class ConveyCmd extends CommandBase {
 	private final ConveySubsystem conveySubsystem;
-	private final Supplier<Boolean> convey, release;
+	private final Supplier<Boolean> convey;
 
-	public ConveyCmd(ConveySubsystem conveySubsystem, Supplier<Boolean> convey, Supplier<Boolean> release) {
+	public ConveyCmd(ConveySubsystem conveySubsystem, Supplier<Boolean> convey) {
 		super(conveySubsystem);
 		this.conveySubsystem = conveySubsystem;
 		this.convey = convey;
-		this.release = release;
 	}
 
 	@Override
@@ -22,7 +21,6 @@ public class ConveyCmd extends CommandBase {
 	@Override
 	public void execute() {
 		if (this.convey.get()) this.conveySubsystem.execute();
-		else if (this.release.get()) this.conveySubsystem.release();
 		else this.conveySubsystem.stopModules();
 	}
 
