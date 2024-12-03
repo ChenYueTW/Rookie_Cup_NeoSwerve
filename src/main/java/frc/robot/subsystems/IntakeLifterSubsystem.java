@@ -60,6 +60,6 @@ public class IntakeLifterSubsystem extends SubsystemBase {
 
     @Override
     public void putDashboard() {
-        SmartDashboard.putNumber("Lifter/pose", this.encoder.getAbsolutePosition());
+        SmartDashboard.putNumber("Intake/position", this.encoder.getAbsolutePosition());
     }
 }

@@ -24,6 +24,10 @@ public class ShooterSubsystem extends SubsystemBase {
         this.back.setControl(this.follower);
     }
 
+    public boolean canShoot() {
+        return (this.front.getVelocitySpeeds() + this.back.getVelocitySpeeds()) / 2.0 >= 50.0;
+    }
+
     public void stopModules() {
         this.front.stopMotor();
         this.back.stopMotor();
@@ -33,5 +37,6 @@ public class ShooterSubsystem extends SubsystemBase {
     public void putDashboard() {
         SmartDashboard.putNumber("Shooter/Front", this.front.getVelocitySpeeds());
         SmartDashboard.putNumber("Shooter/Back", this.back.getVelocitySpeeds());
+        SmartDashboard.putBoolean("Shooter/canShoot", this.canShoot());
     }
 }

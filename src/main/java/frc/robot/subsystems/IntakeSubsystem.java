@@ -39,6 +39,6 @@ public class IntakeSubsystem extends SubsystemBase {
 
     @Override
     public void putDashboard() {
-        SmartDashboard.putNumber("Intake Vel", this.intake.getVelocity());
+        SmartDashboard.putNumber("Intake/Velocity", this.intake.getVelocity());
     }
 }

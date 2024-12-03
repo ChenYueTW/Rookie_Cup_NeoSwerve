@@ -14,8 +14,8 @@ public class Driver extends XboxController implements IDashboardProvider {
     private final SlewRateLimiter rotationLimiter = new SlewRateLimiter(SwerveConstants.MAX_ANGULAR_ACCELERATION);
     public static boolean autoAimMode = false;
 
-    public Driver(int port) {
-        super(port);
+    public Driver() {
+        super(0);
         this.registerDashboard();
     }
 

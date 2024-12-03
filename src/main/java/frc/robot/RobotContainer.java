@@ -14,8 +14,8 @@ import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
 
 public class RobotContainer {
-	private final Driver driver = new Driver(0);
-	private final Controller controller = new Controller(1);
+	private final Driver driver = new Driver();
+	private final Controller controller = new Controller();
 
 	private final SwerveSubsystem swerveSubsystem = new SwerveSubsystem();
 	private final ConveySubsystem conveySubsystem = new ConveySubsystem();
