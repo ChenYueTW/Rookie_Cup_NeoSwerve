@@ -7,11 +7,9 @@ import frc.robot.lib.motor.SparkModule;
 import frc.robot.lib.subsystems.SubsystemBase;
 
 public class IntakeSubsystem extends SubsystemBase {
-    // TODO
-    private final SparkModule intake = new SparkModule(0, false, false);
-    private final double INTAKE_SPEED = 0.0;
-    private final double RELEASE_SPEED = 0.0;
-    private final double AMP_SPEED = 0.0;
+    private final SparkModule intake = new SparkModule(14, false, false);
+    private final double INTAKE_SPEED = 0.3;
+    private final double RELEASE_SPEED = -0.3;
 
     public IntakeSubsystem() {
         super("Intake");
@@ -23,10 +21,6 @@ public class IntakeSubsystem extends SubsystemBase {
 
     public void releaseIntake() {
         this.intake.set(this.RELEASE_SPEED);
-    }
-
-    public void releaseAmp() {
-        this.intake.set(this.AMP_SPEED);
     }
 
     public Command cmdExecute() {

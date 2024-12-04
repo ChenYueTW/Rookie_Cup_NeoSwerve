@@ -28,14 +28,16 @@ public class ConveySubsystem extends SubsystemBase {
         this.convey.set(-this.CONVEY_SPEED);
     }
 
-    public Command isAlliance() {
+    public Command isAllianceCmd() {
         return new WaitUntilCommand(() -> this.colorSensor.isAlliance());
+    }
+
+    public boolean isAlliance() {
+        return this.colorSensor.isAlliance();
     }
     
     public Command onTrue() {
-        return new ParallelDeadlineGroup(
-			this.isAlliance(),
-			this.cmdExecute()).andThen(
+        return this.cmdExecute().andThen(
 				new ParallelRaceGroup(
 					this.cmdRelease(),
 					new WaitCommand(0.5))
@@ -49,7 +51,7 @@ public class ConveySubsystem extends SubsystemBase {
     public Command cmdRelease() {
         return new ParallelRaceGroup(
             Commands.runEnd(this::release, this::stopModules, this),
-            new WaitCommand(0.3)
+            new WaitCommand(1.0)
         );
     }
 

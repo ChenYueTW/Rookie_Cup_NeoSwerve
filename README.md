@@ -11,5 +11,10 @@
 * rightY -- Shooter lifter
 * xButton -- convey input
 * aButton -- autoIntake (lifterDown、intake、convey)
+* yButton -- intake
+* bButton -- release intake
 * leftBumper -- Shoot
 * rightBumper -- auto aim hub (Aim、Shoot)
+
+TODO
+Auto shoot different balls from alliance.

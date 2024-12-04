@@ -75,6 +75,15 @@ public class SwerveSubsystem extends SubsystemBase {
         this.gyro.reset();
     }
 
+    /**
+     * Method to drive the robot using joystick info.
+     *
+     * @param xSpeed        Speed of the robot in the x direction (forward).
+     * @param ySpeed        Speed of the robot in the y direction (sideways).
+     * @param rot           Angular rate of the robot.
+     * @param field         Whether the provided x and y speeds are relative to the
+     *                      field.
+     */
     public void driveSwerve(double xSpeed, double ySpeed, double rotation, boolean field) {
         SwerveModuleState[] state = SwerveConstants.swerveDriveKinematics.toSwerveModuleStates(field ? 
             ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rotation, this.gyro.getRotation2d()) :
@@ -108,6 +117,11 @@ public class SwerveSubsystem extends SubsystemBase {
         this.setModuleState(state);
     }
 
+    /**
+     * Sets the swerve ModuleStates.
+     *
+     * @param desiredStates The desired SwerveModule states.
+     */
     public void setModuleState(SwerveModuleState[] states) {
         SwerveDriveKinematics.desaturateWheelSpeeds(states, SwerveConstants.MAX_SPEED_METERS_PER_SECOND);
         this.frontLeft.setDesiredState(states[0]);
@@ -116,6 +130,11 @@ public class SwerveSubsystem extends SubsystemBase {
         this.backRight.setDesiredState(states[3]);
     }
 
+    /**
+     * Returns the current state of the swerve.
+     *
+     * @return The current state of the swerve.
+     */
     public SwerveModuleState[] getModuleState() {
         return new SwerveModuleState[] {
             this.frontLeft.getState(),
@@ -125,6 +144,11 @@ public class SwerveSubsystem extends SubsystemBase {
         };
     }
 
+    /**
+     * Returns the current position of the swerve.
+     *
+     * @return The current position of the swerve.
+     */
     public SwerveModulePosition[] getModulePosition() {
         return new SwerveModulePosition[] {
             this.frontLeft.getPosition(),
@@ -142,10 +166,20 @@ public class SwerveSubsystem extends SubsystemBase {
         }
     }
 
+     /**
+     * Returns the currently-estimated pose of the robot.
+     *
+     * @return The pose.
+     */
     public Pose2d getPose() {
         return this.odometry.getPoseMeters();
     }
 
+    /**
+     * Resets the odometry to the specified pose.
+     *
+     * @param pose The pose to which to set the odometry.
+     */
     public void resetPose(Pose2d pose) {
         if (Robot.isSimulation()) {
             this.publisher.set(pose);
@@ -156,10 +190,16 @@ public class SwerveSubsystem extends SubsystemBase {
         this.odometry.resetPosition(this.gyro.getRotation2d(), this.getModulePosition(), pose);
     }
 
+    /**
+     * Returns the chassis speed of the swerve
+     * 
+     * @return The chassis speed of the swerve
+     */
     public ChassisSpeeds getSpeeds() {
         return SwerveConstants.swerveDriveKinematics.toChassisSpeeds(this.getModuleState());
     }
 
+    // Stop swerve.
     public void stopModules() {
         this.frontLeft.stop();
         this.frontRight.stop();

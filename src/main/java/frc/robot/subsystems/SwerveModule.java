@@ -24,6 +24,12 @@ public class SwerveModule implements IDashboardProvider {
     private double driveOutput;
     private double turnOutput;
 
+    /**
+     * Constructs a SwerveModule and configures the driving and turning motor,
+     * encoder, and PID controller. This configuration is specific to the REV
+     * Swerve Module built with NEOs, SPARKS MAX, and a Through Bore
+     * Encoder.
+     */
     public SwerveModule(
         int driveMotorPort, int turnMotorPort, int turnEncoderPort,
         boolean driveMotorReverse, boolean turnMotorReverse, boolean driveEncoderReverse,
@@ -37,15 +43,27 @@ public class SwerveModule implements IDashboardProvider {
         this.driveEncoder = new DriveEncoder(this.driveMotor.getEncoder(), driveEncoderReverse);
         this.turnEncoder = new TurnEncoder(turnEncoderPort);
 
+        // Reset Driving and Turning motor.
+        this.driveMotor.restoreFactoryDefaults();
+        this.turnMotor.restoreFactoryDefaults();
+
+        // Convert motor angle to wheel angle in degrees.
         this.driveEncoder.setPositionConversionFactor(SwerveConstants.DRIVE_POSITION_CONVERSION_FACTOR);
+        // Convert the number of motor turns to the number of wheel turns in m/s.
         this.driveEncoder.setVelocityConversionFactor(SwerveConstants.DRIVE_VELOCITY_CONVERSION_FACTOR);
 
-        this.turnPid = new PIDController(0.0073, 0., 0.0); // TODO
+        this.turnPid = new PIDController(0.0073, 0.0, 0.0); // TODO
+        // Angle use -180 to 180, Radian use -Math.PI to Math.PI.
         this.turnPid.enableContinuousInput(-180, 180);
 
         this.motorName = motorName;
     }
     
+    /**
+     * Returns the current state of the module.
+     *
+     * @return The current state of the module.
+     */
     public SwerveModuleState getState() {
         return new SwerveModuleState(
             this.driveEncoder.getVelocity(),
@@ -53,6 +71,11 @@ public class SwerveModule implements IDashboardProvider {
         );
     }
 
+    /**
+     * Returns the current position of the module.
+     *
+     * @return The current position of the module.
+     */
     public SwerveModulePosition getPosition() {
         return new SwerveModulePosition(
             this.driveEncoder.getPosition(),
@@ -60,6 +83,11 @@ public class SwerveModule implements IDashboardProvider {
         );
     }
 
+    /**
+     * Sets the desired state for the module.
+     *
+     * @param desiredState Desired state with speed and angle.
+     */
     public void setDesiredState(SwerveModuleState desiredState) {
         SwerveModuleState state = SwerveModuleState.optimize(desiredState, this.getPosition().angle);
 
@@ -70,12 +98,14 @@ public class SwerveModule implements IDashboardProvider {
         this.turnMotor.set(this.turnOutput);
     }
 
+    // Put Drive Velocity and Turn Position to SmartDashboard.
     @Override
     public void putDashboard() {
         SmartDashboard.putNumber("SwerveState/" + this.motorName + " DriveVel", this.driveEncoder.getVelocity());
         SmartDashboard.putNumber("SwerveState/" + this.motorName + " TurnPos", this.turnEncoder.getAbsolutePositionDegrees());
     }
 
+    // Stop module.
     public void stop() {
         this.driveMotor.set(0.0);
         this.turnMotor.set(0.0);

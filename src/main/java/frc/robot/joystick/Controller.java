@@ -11,7 +11,7 @@ public class Controller extends XboxController {
     }
 
     public double getIntakeLifterSpeed() {
-        return MathUtil.applyDeadband(this.getLeftY(), SwerveConstants.DEAD_BAND);
+        return -MathUtil.applyDeadband(this.getLeftY(), SwerveConstants.DEAD_BAND) * 0.3;
     }
 
     public double geShooterLifterSpeed() {
@@ -26,11 +26,19 @@ public class Controller extends XboxController {
         return new Trigger(this::getAButton);
     }
 
+    public boolean intake() {
+        return this.getYButton();
+    }
+
+    public boolean releaseIntake() {
+        return this.getBButton();
+    }
+
     public Trigger shoot() {
         return new Trigger(this::getLeftBumper);
     }
 
-    public boolean autoShoot() {
-        return this.getRightBumper();
+    public Trigger autoShoot() {
+        return new Trigger(this::getRightBumper);
     }
 }

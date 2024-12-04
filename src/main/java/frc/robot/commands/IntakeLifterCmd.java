@@ -16,7 +16,9 @@ public class IntakeLifterCmd extends Command {
 	}
 
 	@Override
-	public void initialize() {}
+	public void initialize() {
+		this.intakeLifterSubsystem.onTrue();
+	}
 
 	@Override
 	public void execute() {
