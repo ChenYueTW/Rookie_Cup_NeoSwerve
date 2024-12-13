@@ -8,8 +8,8 @@ import frc.robot.lib.subsystems.SubsystemBase;
 
 public class IntakeSubsystem extends SubsystemBase {
     private final SparkModule intake = new SparkModule(14, false, false);
-    private final double INTAKE_SPEED = 0.3;
-    private final double RELEASE_SPEED = -0.3;
+    private final double INTAKE_SPEED = 0.6;
+    private final double RELEASE_SPEED = -0.6;
 
     public IntakeSubsystem() {
         super("Intake");

@@ -19,7 +19,6 @@ public class ShooterSubsystem extends SubsystemBase {
     private final PIDController frontPid = new PIDController(0, 0, 0);
     private final Follower follower = new Follower(0, true);
     private final double GOAL_SPEED = 50.0;
-    private final boolean shooting = false;
 
     public ShooterSubsystem() {
         super("Shooter");

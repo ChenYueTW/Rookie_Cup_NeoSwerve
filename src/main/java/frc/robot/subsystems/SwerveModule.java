@@ -52,7 +52,7 @@ public class SwerveModule implements IDashboardProvider {
         // Convert the number of motor turns to the number of wheel turns in m/s.
         this.driveEncoder.setVelocityConversionFactor(SwerveConstants.DRIVE_VELOCITY_CONVERSION_FACTOR);
 
-        this.turnPid = new PIDController(0.0073, 0.0, 0.0); // TODO
+        this.turnPid = new PIDController(0.009, 0.0, 0.0); // TODO
         // Angle use -180 to 180, Radian use -Math.PI to Math.PI.
         this.turnPid.enableContinuousInput(-180, 180);
 

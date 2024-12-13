@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.lib.motor.TalonModule;
@@ -9,23 +10,25 @@ import frc.robot.lib.subsystems.SubsystemBase;
 public class ShooterLifterSubsystem extends SubsystemBase {
     // TODO
     private final TalonModule shooterLifter = new TalonModule(0, false, true);
-    private final DutyCycleEncoder encoder = new DutyCycleEncoder(0);
     private final PIDController lifterPid = new PIDController(0, 0, 0);
-    private final double MAX_DEGREE = 0.0; // TODO
-    private final double MIN_DEGREE = 0.0; // TODO
+    private final double GEAR_RATIO = 0.0;
+    private final double MAX_DEGREE = 0.0;
+    private final double MIN_DEGREE = 0.0;
 
     public ShooterLifterSubsystem() {
         super("Shooter Liefter");
+    }
 
-        // this.shooterLifter.setDegreesRange(this.MAX_DEGREE, this.MIN_DEGREE);
+    public double getPosition() {
+        return this.shooterLifter.getPositionValue() * this.GEAR_RATIO;
     }
 
     public void execute(double speed) {
         this.shooterLifter.set(speed);
     }
 
-    public void moveTo(double degrees) {
-        double speed = this.lifterPid.calculate(this.encoder.get(), degrees);
+    public void liftTo(double degrees) {
+        double speed = this.lifterPid.calculate(this.getPosition(), degrees);
         this.execute(speed);
     }
 
@@ -35,6 +38,6 @@ public class ShooterLifterSubsystem extends SubsystemBase {
 
     @Override
     public void putDashboard() {
-        SmartDashboard.putNumber("Shooter/Lifter Pos", this.encoder.get());
+        SmartDashboard.putNumber("Shooter/Lifter Pos", this.getPosition());
     }
 }

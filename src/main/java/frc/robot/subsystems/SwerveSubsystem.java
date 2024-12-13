@@ -90,6 +90,7 @@ public class SwerveSubsystem extends SubsystemBase {
             new ChassisSpeeds(xSpeed, ySpeed, rotation)
         );
         this.setModuleState(state);
+        this.modulePublisher.set(state);
     }
 
     public void simDrive(double xSpeed, double ySpeed, double rotation) {
@@ -101,8 +102,8 @@ public class SwerveSubsystem extends SubsystemBase {
         this.x += speeds.vxMetersPerSecond * 0.015;
         this.y += speeds.vyMetersPerSecond * 0.015;
         this.rot += speeds.omegaRadiansPerSecond * 0.06;
-        this.publisher.set(new Pose2d(this.x, this.y, new Rotation2d(this.rot)));
-        this.modulePublisher.set(states); /// Swerve Sim
+        this.publisher.set(new Pose2d(this.x, this.y, new Rotation2d(this.rot))); /// Swerve Sim
+        this.modulePublisher.set(states);
     }
 
     public void turnDrive(double xSpeed, double ySpeed, double angle) {
