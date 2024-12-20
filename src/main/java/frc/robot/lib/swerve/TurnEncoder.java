@@ -14,4 +14,10 @@ public class TurnEncoder extends CANcoder {
         position %= 360.0;
         return position > 180 ? position - 360 : position;
     }
+
+    public double getAbsolutePositionRotations() {
+        double position = super.getAbsolutePosition().getValue();
+        position %= 1.0;
+        return position > 0.5 ? position - 1.0 : position;
+    }
 }

@@ -68,7 +68,7 @@ public class SwerveSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         this.odometry.update(this.gyro.getRotation2d(), getModulePosition());
-        // this.publisher.set(new Pose3d(this.getPose()));
+        this.publisher.set(this.getPose());
     }
     
     public void resetGyro() {

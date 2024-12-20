@@ -23,8 +23,8 @@ public class RobotContainer {
 	private final Controller controller = new Controller();
 
 	// private final SwerveSubsystem swerveSubsystem = new SwerveSubsystem();
-	private final ConveySubsystem conveySubsystem = new ConveySubsystem();
-	private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
+	// private final ConveySubsystem conveySubsystem = new ConveySubsystem();
+	// private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
 	private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
 	private final IntakeLifterSubsystem intakeLifterSubsystem = new IntakeLifterSubsystem();
 
@@ -35,7 +35,7 @@ public class RobotContainer {
 
 	// Auto
 	@SuppressWarnings("unused")
-	private final AutoModeSelecter autoModeSelecter = new AutoModeSelecter();
+	// private final AutoModeSelecter autoModeSelecter = new AutoModeSelecter();
 	// private final AutoModeExecutor autoModeExecutor = new AutoModeExecutor(swerveSubsystem);
 
 	public RobotContainer() {
@@ -77,12 +77,12 @@ public class RobotContainer {
 				).raceWith(new WaitCommand(2.0))));
 		
 		// Auto Shoot
-		this.controller.autoShoot()
-			.onTrue(this.shooterSubsystem.autoShoot()
-				.raceWith(
-					new WaitUntilCommand(() -> this.shooterSubsystem.canShoot())
-						.andThen(this.conveySubsystem.cmdRelease())
-				));
+		// this.controller.autoShoot()
+		// 	.onTrue(this.shooterSubsystem.autoShoot()
+		// 		.raceWith(
+		// 			new WaitUntilCommand(() -> this.shooterSubsystem.canShoot())
+		// 				.andThen(this.conveySubsystem.cmdRelease())
+		// 		));
 	}
 
 	public Command getAutonomousCommand() {
