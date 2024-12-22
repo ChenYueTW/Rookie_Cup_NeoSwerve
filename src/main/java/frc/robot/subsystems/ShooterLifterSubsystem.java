@@ -9,7 +9,7 @@ import frc.robot.lib.subsystems.SubsystemBase;
 
 public class ShooterLifterSubsystem extends SubsystemBase {
     // TODO
-    private final TalonModule shooterLifter = new TalonModule(0, false, true);
+    private final TalonModule shooterLifter = new TalonModule(18, false, true);
     private final PIDController lifterPid = new PIDController(0, 0, 0);
     private final double GEAR_RATIO = 0.0;
     private final double MAX_DEGREE = 0.0;

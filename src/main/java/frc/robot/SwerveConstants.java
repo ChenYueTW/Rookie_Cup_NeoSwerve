@@ -9,15 +9,15 @@ public final class SwerveConstants {
 	public static final double TRACK_LENGTH = Units.inchesToMeters(19.25);
 	public static final double WHEEL_RADIUS = 0.0508;
 
-	public static final double MAX_SPEED_METERS_PER_SECOND = 3.0;
+	public static final double MAX_SPEED_METERS_PER_SECOND = 2.0;
 	public static final double MAX_ACCELERATION = 9.0;
-	// public static final double MAX_ANGULAR_DEGREES_PER_SECOND = 90.0;
+	public static final double MAX_ANGULAR_DEGREES_PER_SECOND = 90.0;
 	public static final double MAX_ANGULAR_ACCELERATION = 9.0;
 	public static final double DRIVE_GEAR_RATIO = 57.0 / 7.0;
 	public static final int MAX_VOLTAGE = 20;
 
 	public static final double DRIVE_VELOCITY_CONVERSION_FACTOR = WHEEL_RADIUS * 2 / DRIVE_GEAR_RATIO * Math.PI / 60;
-	public static final double DRIVE_POSITION_CONVERSION_FACTOR = WHEEL_RADIUS * 2 / DRIVE_GEAR_RATIO * Math.PI / 360.0;
+	public static final double DRIVE_POSITION_CONVERSION_FACTOR = WHEEL_RADIUS * 2 / DRIVE_GEAR_RATIO * Math.PI;
 
 	public static final SwerveDriveKinematics swerveDriveKinematics = new SwerveDriveKinematics(
 		new Translation2d(TRACK_LENGTH / 2, TRACK_WIDTH / 2),

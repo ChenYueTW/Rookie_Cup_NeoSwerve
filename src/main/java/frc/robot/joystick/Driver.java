@@ -20,12 +20,12 @@ public class Driver extends XboxController implements IDashboardProvider {
     }
 
     public double getXDesiredSpeed() {
-        double speed = -MathUtil.applyDeadband(this.getLeftY(), SwerveConstants.DEAD_BAND) * 4.0 * this.getBrake();
+        double speed = -MathUtil.applyDeadband(this.getLeftY(), SwerveConstants.DEAD_BAND) * 2.0 * this.getBrake();
         return this.xSpeedLimiter.calculate(speed);
     }
 
     public double getYDesiredSpeed() {
-        double speed = -MathUtil.applyDeadband(this.getLeftX(), SwerveConstants.DEAD_BAND) * 4.0 * this.getBrake();
+        double speed = -MathUtil.applyDeadband(this.getLeftX(), SwerveConstants.DEAD_BAND) * 2.0 * this.getBrake();
         return this.ySpeedLimiter.calculate(speed);
     }
 
@@ -35,7 +35,7 @@ public class Driver extends XboxController implements IDashboardProvider {
     }
 
     private double getBrake() {
-        return 1.0 - MathUtil.applyDeadband(this.getLeftTriggerAxis(), SwerveConstants.DEAD_BAND);
+        return 1.0 - MathUtil.applyDeadband(this.getRightTriggerAxis(), SwerveConstants.DEAD_BAND);
     }
 
     public Trigger autoAimMode() {
@@ -52,6 +52,10 @@ public class Driver extends XboxController implements IDashboardProvider {
 
     public boolean getConveyOutput() {
         return this.getYButton();
+    }
+
+    public boolean resetGyro() {
+        return this.getAButton();
     }
 
     @Override

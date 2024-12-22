@@ -26,6 +26,10 @@ public class IntakeSubsystem extends SubsystemBase {
     public Command cmdExecute() {
         return Commands.runEnd(this::executeIntake, this::stopIntake, this);
     }
+    
+    public Command cmdRelease() {
+        return Commands.runEnd(this::releaseIntake, this::stopIntake, this);
+    }
 
     public void stopIntake() {
         this.intake.stopMotor();

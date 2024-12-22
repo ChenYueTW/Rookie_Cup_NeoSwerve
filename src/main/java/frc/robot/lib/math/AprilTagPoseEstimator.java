@@ -12,10 +12,10 @@ public class AprilTagPoseEstimator {
     // TODO
     private static final double TOLERANCE = 0.012;
     private static final double HEIGHT = 0.0;
-    private static final Vector3D CAMERA_POSE = new Vector3D(0.0, 0.26536, 0.640126);
+    private static final Vector3D CAMERA_POSE = new Vector3D(-0.32186, -0.378379, 0.378379);
     private static final Vector3D CENTRAL_SIGHT = new Vector3D(0.0, -0.603625, 0.197135);
-    private static final Vector3D CAM_X_AXIS = new Vector3D(0.6, 0.0, 0.0);
-    private static final Vector3D CAM_Y_AXIS = new Vector3D(0.0, 0.12, 0.36);
+    private static final Vector3D CAM_X_AXIS = new Vector3D(0.9, 0.0, 0.0);
+    private static final Vector3D CAM_Y_AXIS = new Vector3D(0.0, 0.81, 0.81);
 
     @SuppressWarnings("deprecation")
     public static Translation3d getAprilTagPose(double tx, double ty, int id) {

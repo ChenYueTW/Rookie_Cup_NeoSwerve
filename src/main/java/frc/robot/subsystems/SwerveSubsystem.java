@@ -5,6 +5,7 @@ import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
@@ -13,9 +14,13 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.networktables.StructPublisher;
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.SwerveConstants;
+import frc.robot.lib.math.MathHelper;
 import frc.robot.lib.subsystems.SubsystemBase;
 
 public class SwerveSubsystem extends SubsystemBase {
@@ -25,42 +30,40 @@ public class SwerveSubsystem extends SubsystemBase {
     private final SwerveModule backRight;
     private final AHRS gyro;
     private final SwerveDriveOdometry odometry;
-    private final PIDController turnPid = new PIDController(0, 0, 0);
+    private final PIDController xDrivePid = new PIDController(0, 0, 0); // TODO
+    private final PIDController yDrivePid = new PIDController(0, 0, 0); // TODO
+    private final PIDController rotationPid = new PIDController(0, 0, 0); // TODO
+    private final Translation2d goalTranslate = new Translation2d(0.0, 0); // TODO
     private double x = 0;
     private double y = 0;
     private double rot = 0;
 
     private final StructArrayPublisher<SwerveModuleState> modulePublisher = NetworkTableInstance.getDefault()
-        .getStructArrayTopic("Advantage_Config/RobotModule", SwerveModuleState.struct).publish();
+            .getStructArrayTopic("Advantage_Config/RobotModule", SwerveModuleState.struct).publish();
     private final StructPublisher<Pose2d> publisher = NetworkTableInstance.getDefault()
-        .getStructTopic("Advantage_Config/Robot", Pose2d.struct).publish();
+            .getStructTopic("Advantage_Config/Robot", Pose2d.struct).publish();
 
     public SwerveSubsystem() {
         super("Swerve");
         this.frontLeft = new SwerveModule(
             2, 1, 9,
             true, true, true,
-            "frontLeft"
-        );
+            "frontLeft");
         this.frontRight = new SwerveModule(
-            6, 5, 10, 
+            6, 5, 10,
             false, true, true,
-            "frontRight"
-        );
+            "frontRight");
         this.backLeft = new SwerveModule(
             4, 3, 11,
             true, true, true,
-            "backLeft"
-        );
+            "backLeft");
         this.backRight = new SwerveModule(
             7, 8, 12,
             false, true, true,
-            "backRight"
-        );
+            "backRight");
         this.gyro = new AHRS(SPI.Port.kMXP);
         this.odometry = new SwerveDriveOdometry(
-            SwerveConstants.swerveDriveKinematics, this.gyro.getRotation2d(), this.getModulePosition()
-        );
+            SwerveConstants.swerveDriveKinematics, this.gyro.getRotation2d(), this.getModulePosition());
         this.wait(1000);
         this.gyro.reset();
     }
@@ -70,7 +73,7 @@ public class SwerveSubsystem extends SubsystemBase {
         this.odometry.update(this.gyro.getRotation2d(), getModulePosition());
         this.publisher.set(this.getPose());
     }
-    
+
     public void resetGyro() {
         this.gyro.reset();
     }
@@ -78,27 +81,26 @@ public class SwerveSubsystem extends SubsystemBase {
     /**
      * Method to drive the robot using joystick info.
      *
-     * @param xSpeed        Speed of the robot in the x direction (forward).
-     * @param ySpeed        Speed of the robot in the y direction (sideways).
-     * @param rot           Angular rate of the robot.
-     * @param field         Whether the provided x and y speeds are relative to the
-     *                      field.
+     * @param xSpeed Speed of the robot in the x direction (forward).
+     * @param ySpeed Speed of the robot in the y direction (sideways).
+     * @param rot    Angular rate of the robot.
+     * @param field  Whether the provided x and y speeds are relative to the
+     *               field.
      */
     public void driveSwerve(double xSpeed, double ySpeed, double rotation, boolean field) {
-        SwerveModuleState[] state = SwerveConstants.swerveDriveKinematics.toSwerveModuleStates(field ? 
-            ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rotation, this.gyro.getRotation2d()) :
-            new ChassisSpeeds(xSpeed, ySpeed, rotation)
-        );
+        SwerveModuleState[] state = SwerveConstants.swerveDriveKinematics.toSwerveModuleStates(
+            field ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rotation, this.gyro.getRotation2d())
+            : new ChassisSpeeds(xSpeed, ySpeed, rotation));
         this.setModuleState(state);
+        
         this.modulePublisher.set(state);
     }
 
     public void simDrive(double xSpeed, double ySpeed, double rotation) {
         SwerveModuleState[] states = SwerveConstants.swerveDriveKinematics.toSwerveModuleStates(
-            new ChassisSpeeds(xSpeed, ySpeed, rotation)
-        );
+            new ChassisSpeeds(xSpeed, ySpeed, rotation));
         ChassisSpeeds speeds = new ChassisSpeeds(xSpeed, ySpeed, rotation);
-        
+
         this.x += speeds.vxMetersPerSecond * 0.015;
         this.y += speeds.vyMetersPerSecond * 0.015;
         this.rot += speeds.omegaRadiansPerSecond * 0.06;
@@ -106,9 +108,16 @@ public class SwerveSubsystem extends SubsystemBase {
         this.modulePublisher.set(states);
     }
 
-    public void turnDrive(double xSpeed, double ySpeed, double angle) {
-        double speed = this.turnPid.calculate(this.gyro.getAngle(), angle);
-        this.driveSwerve(xSpeed, ySpeed, speed, true);
+    public void situateRobot(Translation2d vector, double angle) {
+        double xSpeed = this.xDrivePid.calculate(vector.getX(), this.goalTranslate.getX());
+        double ySpeed = this.yDrivePid.calculate(vector.getY(), this.goalTranslate.getY());
+        double rotation = this.rotationPid.calculate(0.0, angle);
+
+        xSpeed = MathHelper.applyMax(xSpeed, SwerveConstants.MAX_SPEED_METERS_PER_SECOND);
+        ySpeed = MathHelper.applyMax(ySpeed, SwerveConstants.MAX_SPEED_METERS_PER_SECOND);
+        rotation = MathHelper.applyMax(rotation, SwerveConstants.MAX_ANGULAR_DEGREES_PER_SECOND);
+
+        this.driveSwerve(xSpeed, ySpeed, rotation, false);
     }
 
     public void chassisDrive(ChassisSpeeds relativeSpeed) {
@@ -167,7 +176,7 @@ public class SwerveSubsystem extends SubsystemBase {
         }
     }
 
-     /**
+    /**
      * Returns the currently-estimated pose of the robot.
      *
      * @return The pose.
@@ -210,5 +219,25 @@ public class SwerveSubsystem extends SubsystemBase {
 
     @Override
     public void putDashboard() {
+        // SmartDashboard.putData("SwerveDrive", new Sendable() {
+        //     @Override
+        //     public void initSendable(SendableBuilder builder) {
+        //         builder.setSmartDashboardType("SwerveDrive");
+
+        //         builder.addDoubleProperty("Front Left Angle", () -> frontLeft.getPosition().angle.getRotations(), null);
+        //         builder.addDoubleProperty("Front Left Velocity", () -> frontLeft.getState().speedMetersPerSecond, null);
+
+        //         builder.addDoubleProperty("Front Right Angle", () -> frontRight.getPosition().angle.getRotations(), null);
+        //         builder.addDoubleProperty("Front Right Velocity", () -> frontRight.getState().speedMetersPerSecond, null);
+
+        //         builder.addDoubleProperty("Back Left Angle", () -> backLeft.getPosition().angle.getRotations(), null);
+        //         builder.addDoubleProperty("Back Left Velocity", () -> backLeft.getState().speedMetersPerSecond, null);
+
+        //         builder.addDoubleProperty("Back Right Angle", () -> backRight.getPosition().angle.getRotations(), null);
+        //         builder.addDoubleProperty("Back Right Velocity", () -> backRight.getState().speedMetersPerSecond, null);
+
+        //         builder.addDoubleProperty("Robot Angle", () -> gyro.getRotation2d().getRotations(), null);
+        //     }
+        // });
     }
 }

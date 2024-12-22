@@ -7,13 +7,11 @@ public class VisionHelper {
     DoubleSubscriber aprilTagId;
     DoubleSubscriber ty; 
     DoubleSubscriber tx;
-    DoubleSubscriber tv;
 
     public VisionHelper(String tableName) {
         this.aprilTagId = NetworkTableInstance.getDefault().getTable(tableName).getDoubleTopic("tid").subscribe(-1);
         this.tx = NetworkTableInstance.getDefault().getTable(tableName).getDoubleTopic("tx").subscribe(-1);
         this.ty = NetworkTableInstance.getDefault().getTable(tableName).getDoubleTopic("ty").subscribe(-1);
-        this.tv = NetworkTableInstance.getDefault().getTable(tableName).getDoubleTopic("tv").subscribe(-1);
     }
 
     public int getAprilTagId() {
@@ -29,6 +27,6 @@ public class VisionHelper {
     }
 
     public boolean hasTarget() {
-        return this.tv.get() == 1.0;
+        return this.getAprilTagId() != -1;
     }
 }

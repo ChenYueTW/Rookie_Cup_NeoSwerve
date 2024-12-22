@@ -26,16 +26,20 @@ public class Controller extends XboxController {
         return new Trigger(this::getAButton);
     }
 
-    public boolean intake() {
-        return this.getYButton();
+    public Trigger intake() {
+        return new Trigger(this::getYButton);
     }
 
-    public boolean releaseIntake() {
-        return this.getBButton();
+    public Trigger releaseIntake() {
+        return new Trigger(this::getBButton);
     }
 
     public Trigger shoot() {
         return new Trigger(this::getLeftBumper);
+    }
+
+    public boolean isShoot() {
+        return this.getLeftBumper();
     }
 
     public Trigger autoShoot() {

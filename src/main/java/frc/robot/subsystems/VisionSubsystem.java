@@ -9,10 +9,16 @@ import frc.robot.lib.subsystems.SubsystemBase;
 
 public class VisionSubsystem extends SubsystemBase {
     // TODO
-    private static final VisionHelper visionHelper = new VisionHelper("");
+    private static final VisionHelper visionHelper = new VisionHelper("raspberrypi");
 
     public VisionSubsystem() {
         super("Vision");
+    }
+
+    public static Translation2d getAprilTag2d() {
+        if (!visionHelper.hasTarget()) return new Translation2d();
+        Translation3d vector = AprilTagPoseEstimator.getAprilTagPose(visionHelper.getTx(), visionHelper.getTy(), visionHelper.getAprilTagId());
+        return new Translation2d(vector.getX(), vector.getY());
     }
 
     public static Translation3d getAprilTag3d() {

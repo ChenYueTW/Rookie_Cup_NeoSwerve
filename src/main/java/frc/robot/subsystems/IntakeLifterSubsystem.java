@@ -15,7 +15,7 @@ import frc.robot.lib.subsystems.SubsystemBase;
 public class IntakeLifterSubsystem extends SubsystemBase {
     private final TalonModule lifter = new TalonModule(13, false, true);
     private final DutyCycleEncoder encoder = new DutyCycleEncoder(0);
-    private final PIDController lifterPid = new PIDController(0.8, 0.0, 0.0); // TODO
+    private final PIDController lifterPid = new PIDController(1.1, 0.0, 0.0); // TODO
     private final double MAX_DEGREE = 0.0083333333333333;
     private final double MIN_DEGREE = -0.347941295713238; // TODO
     private final double GEAR_RATIO = 5.0 / 17.0;
@@ -58,7 +58,7 @@ public class IntakeLifterSubsystem extends SubsystemBase {
      * @return Command terminates until complete.
      */
     public Command isDownDone() {
-        return new WaitUntilCommand(() -> this.getPosition() <= this.MIN_DEGREE + 0.01);
+        return new WaitUntilCommand(() -> this.getPosition() <= this.MIN_DEGREE + 0.05);
     }
 
     /**
@@ -67,7 +67,7 @@ public class IntakeLifterSubsystem extends SubsystemBase {
      * @return Command terminates until complete.
      */
     public Command isUpDone() {
-        return new WaitUntilCommand(() -> this.getPosition() >= this.MAX_DEGREE - 0.02);
+        return new WaitUntilCommand(() -> this.getPosition() >= this.MAX_DEGREE - 0.07);
     }
 
     /**
