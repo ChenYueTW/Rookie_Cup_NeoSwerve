@@ -3,7 +3,6 @@ package frc.robot.commands;
 import java.util.function.Supplier;
 
 import edu.wpi.first.wpilibj.RobotBase;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.SwerveSubsystem;
 import frc.robot.subsystems.VisionSubsystem;
@@ -32,7 +31,7 @@ public class SwerveDriveCmd extends Command {
 
 	@Override
 	public void execute() {
-		if (Driver.autoAimMode && VisionSubsystem.hasTarget()) {
+		if (Driver.autoAimMode && VisionSubsystem.hasTagTarget()) {
 			// TODO
 			this.swerveSubsystem.situateRobot(VisionSubsystem.getAprilTag2d(), VisionSubsystem.getAprilTagAngle());
 			return;

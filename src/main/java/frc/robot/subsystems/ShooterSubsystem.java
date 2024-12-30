@@ -13,14 +13,14 @@ public class ShooterSubsystem extends SubsystemBase {
     private final TalonModule front = new TalonModule(15, true, false);
     private final TalonModule back = new TalonModule(16, false, false);
     private final Follower follower = new Follower(15, true);
-    private final double GOAL_SPEED = 82.0;
+    private final double GOAL_SPEED = 70.0;
 
     public ShooterSubsystem() {
         super("Shooter");
     }
 
     public void execute() {
-        this.front.set(0.9);
+        this.front.set(0.75);
         this.back.setControl(this.follower);
     }
 

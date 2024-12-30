@@ -1,7 +1,6 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.I2C;
-import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -9,7 +8,6 @@ import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.lib.motor.SparkModule;
-import frc.robot.lib.motor.TalonModule;
 import frc.robot.lib.sensor.ColorSensor;
 import frc.robot.lib.subsystems.SubsystemBase;
 
@@ -62,7 +60,7 @@ public class ConveySubsystem extends SubsystemBase {
 
     public Command shootRelease() {
         return new ParallelRaceGroup(
-            Commands.runEnd(() -> this.convey.set(0.7), this::stopModules, this),
+            Commands.runEnd(() -> this.convey.set(0.5), this::stopModules, this),
             new WaitCommand(1.0)
         );
     }

@@ -20,6 +20,7 @@ import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterLifterSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.SwerveSubsystem;
+import frc.robot.subsystems.VisionSubsystem;
 
 public class RobotContainer {
 	private final Driver driver = new Driver();
@@ -38,6 +39,7 @@ public class RobotContainer {
 	// private final ShooterLifterCmd shooterLifterCmd = new ShooterLifterCmd(shooterLifterSubsystem, controller::geShooterLifterSpeed);
 	private final IntakeLifterCmd intakeLifterCmd = new IntakeLifterCmd(intakeLifterSubsystem, controller::getIntakeLifterSpeed);
 
+	private final VisionSubsystem visionSubsystem = new VisionSubsystem();
 	// Auto
 	@SuppressWarnings("unused")
 	private final AutoModeSelecter autoModeSelecter = new AutoModeSelecter();
@@ -56,6 +58,9 @@ public class RobotContainer {
 		// Use auto aim mode to aim HUB
 		this.driver.autoAimMode()
 			.onTrue(Commands.runOnce(this.driver::transformAimMode, this.swerveSubsystem));
+		// this.driver.autoTrackCargo()
+			// .onTrue(
+				// Commands.runEnd(() -> this.swerveSubsystem.situateRobot(VisionSubsystem.getCargo2d(), VisionSubsystem.getCargoAngle()), this.swerveSubsystem::stopModules, this.swerveSubsystem));
 
 		// TODO
 		// input cargo and if color sensor detected that, back.
@@ -63,7 +68,6 @@ public class RobotContainer {
 			.onTrue(this.conveySubsystem.cmdExecute()
 				.raceWith(this.conveySubsystem.isAllianceCmd())
 				.andThen(this.conveySubsystem.cmdRelease()))
-				// .andThen(this.conveySubsystem.cmdRelease()))
 			.onFalse(Commands.run(this.conveySubsystem::stopModules, this.conveySubsystem));
 
 		// intake part auto

@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.SwerveConstants;
+import frc.robot.lib.math.AprilTagPoseEstimator;
 import frc.robot.lib.math.MathHelper;
 import frc.robot.lib.subsystems.SubsystemBase;
 
@@ -62,14 +63,15 @@ public class SwerveSubsystem extends SubsystemBase {
             false, true, true,
             "backRight");
         this.gyro = new AHRS(SPI.Port.kMXP);
-        this.odometry = new SwerveDriveOdometry(
-            SwerveConstants.swerveDriveKinematics, this.gyro.getRotation2d(), this.getModulePosition());
         this.wait(1000);
         this.gyro.reset();
+        this.odometry = new SwerveDriveOdometry(
+            SwerveConstants.swerveDriveKinematics, this.gyro.getRotation2d(), this.getModulePosition());
     }
 
     @Override
     public void periodic() {
+        AprilTagPoseEstimator.getGyroAngle(this.gyro.getAngle());
         this.odometry.update(this.gyro.getRotation2d(), getModulePosition());
         this.publisher.set(this.getPose());
     }

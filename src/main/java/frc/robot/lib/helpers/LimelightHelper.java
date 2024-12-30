@@ -3,12 +3,12 @@ package frc.robot.lib.helpers;
 import edu.wpi.first.networktables.DoubleSubscriber;
 import edu.wpi.first.networktables.NetworkTableInstance;
 
-public class VisionHelper {
+public class LimelightHelper {
     DoubleSubscriber aprilTagId;
     DoubleSubscriber ty; 
     DoubleSubscriber tx;
 
-    public VisionHelper(String tableName) {
+    public LimelightHelper(String tableName) {
         this.aprilTagId = NetworkTableInstance.getDefault().getTable(tableName).getDoubleTopic("tid").subscribe(-1);
         this.tx = NetworkTableInstance.getDefault().getTable(tableName).getDoubleTopic("tx").subscribe(-1);
         this.ty = NetworkTableInstance.getDefault().getTable(tableName).getDoubleTopic("ty").subscribe(-1);
@@ -27,6 +27,6 @@ public class VisionHelper {
     }
 
     public boolean hasTarget() {
-        return this.getAprilTagId() != -1;
+        return this.getAprilTagId() != 0;
     }
 }

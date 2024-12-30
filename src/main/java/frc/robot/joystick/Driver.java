@@ -20,22 +20,26 @@ public class Driver extends XboxController implements IDashboardProvider {
     }
 
     public double getXDesiredSpeed() {
-        double speed = -MathUtil.applyDeadband(this.getLeftY(), SwerveConstants.DEAD_BAND) * 2.0 * this.getBrake();
+        double speed = -MathUtil.applyDeadband(this.getLeftY(), SwerveConstants.DEAD_BAND) * 0.5 * this.getBrake();
         return this.xSpeedLimiter.calculate(speed);
     }
 
     public double getYDesiredSpeed() {
-        double speed = -MathUtil.applyDeadband(this.getLeftX(), SwerveConstants.DEAD_BAND) * 2.0 * this.getBrake();
+        double speed = -MathUtil.applyDeadband(this.getLeftX(), SwerveConstants.DEAD_BAND) * 0.5 * this.getBrake();
         return this.ySpeedLimiter.calculate(speed);
     }
 
     public double getRotationDesiredSpeed() {
-        double speed = -MathUtil.applyDeadband(this.getRightX(), SwerveConstants.DEAD_BAND) * this.getBrake();
+        double speed = -MathUtil.applyDeadband(this.getRightX(), SwerveConstants.DEAD_BAND) * 1.5 * this.getBrake();
         return this.rotationLimiter.calculate(speed);
     }
 
     private double getBrake() {
         return 1.0 - MathUtil.applyDeadband(this.getRightTriggerAxis(), SwerveConstants.DEAD_BAND);
+    }
+
+    public Trigger autoTrackCargo() {
+        return new Trigger(this::getLeftBumper);
     }
 
     public Trigger autoAimMode() {

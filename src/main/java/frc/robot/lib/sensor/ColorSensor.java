@@ -1,19 +1,11 @@
 package frc.robot.lib.sensor;
 
-import com.revrobotics.ColorMatch;
-import com.revrobotics.ColorMatchResult;
 import com.revrobotics.ColorSensorV3;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.I2C.Port;
-import edu.wpi.first.wpilibj.util.Color;
 
 public class ColorSensor extends ColorSensorV3 {
-    // TODO
-    private final Color redCargo = new Color(255, 0, 0);
-    private final Color blueCargo = new Color(0, 0, 255);
-    private final ColorMatch colorMatch = new ColorMatch();
-
     public ColorSensor(Port port) {
         super(port);
         this.configureColorSensor(
@@ -23,8 +15,6 @@ public class ColorSensor extends ColorSensorV3 {
         this.configureProximitySensorLED(
             LEDPulseFrequency.kFreq100kHz,
             LEDCurrent.kPulse125mA, 255);
-        this.colorMatch.addColorMatch(this.redCargo);
-        this.colorMatch.addColorMatch(this.blueCargo);
     }
 
     public boolean isGetBlue() {
@@ -43,7 +33,7 @@ public class ColorSensor extends ColorSensorV3 {
         double green = this.getColor().green;
         double blue = this.getColor().blue;
 
-        if (red >= 0.35 && red <= 0.38 && green >= 0.4 && green <= 0.45 && blue >= 0.15 && blue <= 0.22) {
+        if (red >= 0.49 && red <= 0.57 && green >= 0.3 && green <= 0.35 && blue >= 0.1 && blue <= 0.16) {
             return true;
         }
         return false;

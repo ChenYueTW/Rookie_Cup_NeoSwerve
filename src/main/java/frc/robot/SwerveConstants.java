@@ -16,8 +16,8 @@ public final class SwerveConstants {
 	public static final double DRIVE_GEAR_RATIO = 57.0 / 7.0;
 	public static final int MAX_VOLTAGE = 20;
 
-	public static final double DRIVE_VELOCITY_CONVERSION_FACTOR = WHEEL_RADIUS * 2 / DRIVE_GEAR_RATIO * Math.PI / 60;
-	public static final double DRIVE_POSITION_CONVERSION_FACTOR = WHEEL_RADIUS * 2 / DRIVE_GEAR_RATIO * Math.PI;
+	public static final double DRIVE_VELOCITY_CONVERSION_FACTOR = WHEEL_RADIUS * 2 / DRIVE_GEAR_RATIO * Math.PI / 60.0;
+	public static final double DRIVE_POSITION_CONVERSION_FACTOR = WHEEL_RADIUS * 2 / DRIVE_GEAR_RATIO * Math.PI / 360.0;
 
 	public static final SwerveDriveKinematics swerveDriveKinematics = new SwerveDriveKinematics(
 		new Translation2d(TRACK_LENGTH / 2, TRACK_WIDTH / 2),

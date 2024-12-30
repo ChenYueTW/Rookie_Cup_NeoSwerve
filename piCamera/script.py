@@ -12,6 +12,7 @@ roborio_ip = '10.87.25.2'
 # 相機參數
 camera_width, camera_height = 1280, 800  # 相機解析度
 hfov = 70         # 水平視野
+vfov = 43.75      # 垂直視野
 camera_xCenter, camera_yCenter = camera_width / 2, camera_height / 2   # 目標像素座標（畫面中心）
 print("START")
 
@@ -46,12 +47,9 @@ print("Set up outputs array")
 at_detector = apriltag.Detector(families='tag36h11')  # For Windows
 
 def pixel_to_angle(x, y):
-    # 計算垂直視野 VFOV
-    vfov = hfov * (camera_height / camera_width)
-
     # 計算角度
-    tx = (x / camera_width - 0.5) * hfov
-    ty = (0.5 - y / camera_height) * vfov
+    tx = ((x / camera_width) - 0.5) * hfov
+    ty = (0.5 - (y / camera_height)) * vfov
 
     return tx, ty
 
